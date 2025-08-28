@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import clienteService from '../services/clienteService';
 import { ToastContext } from '../components/Toast';
+import Spinner from '../components/Spinner';
 import '../styles/ClienteForm.css';
 
 const ClienteEdit = () => {
@@ -148,7 +149,7 @@ const ClienteEdit = () => {
   if (loadingData) {
     return (
       <div className="container">
-        <div className="loading">Cargando datos del cliente...</div>
+  <div className="loading"><Spinner size="lg" ariaLabel="Cargando datos del cliente" /> Cargando datos del cliente...</div>
       </div>
     );
   }
@@ -190,7 +191,7 @@ const ClienteEdit = () => {
         <div className="form-group">
           <label htmlFor="email">
             Email *
-            {emailChecking && <span className="checking"> (verificando...)</span>}
+            {emailChecking && <span className="checking"> <Spinner size="sm" /> verificando...</span>}
           </label>
           <input
             type="email"
@@ -231,7 +232,7 @@ const ClienteEdit = () => {
             disabled={loading || emailChecking}
             className="btn btn-primary"
           >
-            {loading ? 'Guardando...' : 'Actualizar Cliente'}
+            {loading ? <><Spinner size="sm" /> Guardando...</> : 'Actualizar Cliente'}
           </button>
           <Link to="/" className="btn btn-secondary">
             Cancelar

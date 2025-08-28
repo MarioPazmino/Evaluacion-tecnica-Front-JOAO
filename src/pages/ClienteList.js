@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import clienteService from '../services/clienteService';
 import { ToastContext } from '../components/Toast';
 import ConfirmModal from '../components/ConfirmModal';
+import Spinner from '../components/Spinner';
 import '../styles/ClienteList.css';
 
 const ClienteList = () => {
@@ -19,6 +20,7 @@ const ClienteList = () => {
   const searchInputRef = useRef(null);
   const [perPage, setPerPage] = useState(10);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // perPageOverride allows immediate requests with a newly selected per-page value
   const loadClientes = async (searchTerm = '', page = 1, perPageOverride = null) => {
@@ -53,14 +55,36 @@ const ClienteList = () => {
   useEffect(() => {
     if (debouncedSearch && debouncedSearch.trim()) {
       setCurrentPage(1);
-      loadClientes(debouncedSearch, 1);
+  loadClientes(debouncedSearch, 1);
+  updateUrlParams(debouncedSearch, 1, perPage);
     }
     // Note: do not auto-load when debouncedSearch is empty to preserve explicit 'Limpiar' behavior
   }, [debouncedSearch]);
 
+  // On mount: read query params and load accordingly
   useEffect(() => {
-    loadClientes();
+    const q = searchParams.get('search') || '';
+    const pageParam = parseInt(searchParams.get('page'), 10) || 1;
+    const perPageParam = parseInt(searchParams.get('per_page'), 10) || perPage;
+
+    // populate local state from params
+    setSearch(q);
+    setPerPage(perPageParam);
+    setCurrentPage(pageParam);
+
+    // If there is a search term, load with it; otherwise load page normally
+    loadClientes(q, pageParam, perPageParam);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Helper to keep URL in sync with state
+  const updateUrlParams = (searchTerm, page, perPageVal) => {
+    const params = {};
+    if (searchTerm && searchTerm.trim()) params.search = searchTerm;
+    if (page && page > 1) params.page = String(page);
+    if (perPageVal && perPageVal !== 10) params.per_page = String(perPageVal);
+    setSearchParams(params, { replace: true });
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -73,6 +97,7 @@ const ClienteList = () => {
 
     setCurrentPage(1);
     loadClientes(search, 1);
+    updateUrlParams(search, 1, perPage);
   };
 
   const goToPage = (page) => {
@@ -80,6 +105,7 @@ const ClienteList = () => {
     const p = Math.max(1, Math.min(page, pagination.last_page));
     setCurrentPage(p);
     loadClientes(search, p);
+  updateUrlParams(search, p, perPage);
   };
 
   // Build a list of page numbers with simple truncation for long ranges
@@ -107,6 +133,7 @@ const ClienteList = () => {
     setCurrentPage(1);
   // pass val directly to avoid race with setPerPage
   loadClientes(search, 1, val);
+  updateUrlParams(search, 1, val);
   };
 
   const handleDelete = (id, nombre) => {
@@ -138,7 +165,7 @@ const ClienteList = () => {
   if (loading) {
     return (
       <div className="container">
-        <div className="loading">Cargando clientes...</div>
+        <div className="loading"><Spinner size="lg" ariaLabel="Cargando clientes" /> Cargando clientes...</div>
       </div>
     );
   }
@@ -243,7 +270,7 @@ const ClienteList = () => {
             {pagination && pagination.last_page > 1 ? (
               <div className="pagination-info">
                 <button className="btn btn-outline" onClick={() => goToPage(1)} disabled={pagination.current_page === 1}>Primera</button>
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page - 1)} disabled={loading || pagination.current_page === 1}>Anterior</button>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page - 1)} disabled={loading || pagination.current_page === 1}>{loading ? <Spinner size="sm" /> : 'Anterior'}</button>
 
                 <div className="page-numbers">
                   {getPageNumbers().map((p, idx) => (
@@ -255,13 +282,13 @@ const ClienteList = () => {
                         className={`btn ${p === pagination.current_page ? 'btn-primary' : 'btn-outline'}`}
                         onClick={() => goToPage(p)}
                         disabled={loading || p === pagination.current_page}
-                      >{p}</button>
+                      >{loading && p === pagination.current_page ? <Spinner size="sm" /> : p}</button>
                     )
                   ))}
                 </div>
 
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page + 1)} disabled={loading || pagination.current_page === pagination.last_page}>Siguiente</button>
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.last_page)} disabled={loading || pagination.current_page === pagination.last_page}>Última</button>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page + 1)} disabled={loading || pagination.current_page === pagination.last_page}>{loading ? <Spinner size="sm" /> : 'Siguiente'}</button>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.last_page)} disabled={loading || pagination.current_page === pagination.last_page}>{loading ? <Spinner size="sm" /> : 'Última'}</button>
               </div>
             ) : (
               <div className="pagination-info">
@@ -276,6 +303,7 @@ const ClienteList = () => {
                   <option value={25}>25</option>
                   <option value={50}>50</option>
                 </select>
+                {loading && <Spinner size="sm" />}
               </label>
               <div className="total-label">Total: {pagination ? pagination.total : clientes.length} clientes</div>
             </div>
