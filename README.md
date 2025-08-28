@@ -53,9 +53,6 @@ Posibles mejoras (opcionales)
 - Añadir tests unitarios/integ. con React Testing Library para flujos críticos.
 - Pulir animaciones y microinteracciones.
 
-Contacto
-Si necesitas que documente también el backend o que prepare un README combinado con scripts de despliegue, dímelo y lo preparo.
-
 ---
 PEQUEÑA NOTA: este README documenta lo hecho en el frontend solamente; el backend es un proyecto separado y no está incluido aquí.
 
