@@ -91,10 +91,17 @@ const ClienteEdit = () => {
   const validateForm = () => {
     const newErrors = {};
 
+    // Permitir letras (con acentos), espacios, guiones y apóstrofes
+    const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s'\-]+$/;
+    // Teléfono: dígitos y los caracteres comunes + - ( ) y espacios
+    const phonePattern = /^[0-9\s()+\-]+$/;
+
     if (!formData.nombre.trim()) {
       newErrors.nombre = 'El nombre es requerido';
     } else if (formData.nombre.length > 255) {
       newErrors.nombre = 'El nombre no puede exceder 255 caracteres';
+    } else if (!namePattern.test(formData.nombre)) {
+      newErrors.nombre = 'El nombre sólo puede contener letras, espacios, guiones y apóstrofes';
     }
 
     if (!formData.email.trim()) {
@@ -103,8 +110,12 @@ const ClienteEdit = () => {
       newErrors.email = 'El formato del email no es válido';
     }
 
-    if (formData.telefono && formData.telefono.length > 20) {
-      newErrors.telefono = 'El teléfono no puede exceder 20 caracteres';
+    if (formData.telefono) {
+      if (formData.telefono.length > 20) {
+        newErrors.telefono = 'El teléfono no puede exceder 20 caracteres';
+      } else if (!phonePattern.test(formData.telefono)) {
+        newErrors.telefono = 'El teléfono sólo puede contener dígitos y los caracteres + - ( ) y espacios';
+      }
     }
 
     setErrors(newErrors);
@@ -170,7 +181,9 @@ const ClienteEdit = () => {
             className={errors.nombre ? 'error' : ''}
             maxLength={255}
             required
+            aria-invalid={errors.nombre ? 'true' : 'false'}
           />
+          <small className="field-hint">Sólo letras, espacios, guiones y apóstrofes</small>
           {errors.nombre && <span className="error-message">{errors.nombre}</span>}
         </div>
 
@@ -204,7 +217,11 @@ const ClienteEdit = () => {
             onChange={handleChange}
             className={errors.telefono ? 'error' : ''}
             maxLength={20}
+            inputMode="tel"
+            aria-invalid={errors.telefono ? 'true' : 'false'}
+            placeholder="Ej: +51 987654321"
           />
+          <small className="field-hint">Dígitos y caracteres + - ( ) y espacios</small>
           {errors.telefono && <span className="error-message">{errors.telefono}</span>}
         </div>
 
