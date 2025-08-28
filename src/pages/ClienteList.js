@@ -250,10 +250,10 @@ const ClienteList = () => {
               <tbody>
                 {clientes.map((cliente) => (
                   <tr key={cliente.id}>
-                    <td>{cliente.nombre}</td>
-                    <td>{cliente.email}</td>
-                    <td>{cliente.telefono || '-'}</td>
-                    <td className="actions">
+                    <td data-label="Nombre">{cliente.nombre}</td>
+                    <td data-label="Email">{cliente.email}</td>
+                    <td data-label="Teléfono">{cliente.telefono || '-'}</td>
+                    <td data-label="Acciones" className="actions">
                       <Link
                         to={`/editar/${cliente.id}`}
                         className="btn btn-small btn-secondary"

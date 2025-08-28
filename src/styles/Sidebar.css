@@ -14,6 +14,17 @@
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Mobile toggle button (hamburger) */
+.sidebar-toggle {
+  /* hidden by default on larger screens; shown only on mobile via media query */
+  display: none;
+}
+
+/* Backdrop shown when sidebar is open on mobile */
+.sidebar-backdrop {
+  display: none; /* visible only on mobile via media query */
+}
+
 .sidebar-header {
   padding: 2rem 1.5rem;
   border-bottom: 1px solid var(--sidebar-border);
@@ -160,14 +171,44 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
+  /* show toggle and backdrop only on narrow viewports */
+  .sidebar-toggle {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1100;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    font-size: 1.125rem;
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1050;
+    display: block;
+  }
   .sidebar {
     width: 260px;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease, visibility 0.3s ease;
+  visibility: hidden;
   }
   
   .sidebar.open {
-    transform: translateX(0);
+  transform: translateX(0);
+  visibility: visible;
+  z-index: 1100;
   }
   
   .sidebar-header {

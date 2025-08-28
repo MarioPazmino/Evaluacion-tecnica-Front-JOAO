@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/Sidebar.css';
 
 const Sidebar = () => {
   const location = useLocation();
+  const [open, setOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   const menuItems = [
     {
@@ -18,8 +20,40 @@ const Sidebar = () => {
     }
   ];
 
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && open) setOpen(false);
+    };
+
+    if (open) {
+      // prevent background scroll while drawer is open
+      document.body.style.overflow = 'hidden';
+      // focus first focusable element inside sidebar
+      setTimeout(() => {
+        if (sidebarRef.current) sidebarRef.current.focus();
+      }, 0);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   return (
-    <div className="sidebar">
+    <>
+      <button
+        className="sidebar-toggle"
+        aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
+      >
+        ☰
+      </button>
+
+      {open && <div className="sidebar-backdrop" onClick={() => setOpen(false)} aria-hidden="true" />}
+
+      <div ref={sidebarRef} tabIndex={-1} className={`sidebar ${open ? 'open' : ''}`}>
       <div className="sidebar-header">
         <h2 className="sidebar-title">
           <span className="sidebar-icon">💼</span>
@@ -52,7 +86,8 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-    </div>
+  </div>
+    </>
   );
 };
 

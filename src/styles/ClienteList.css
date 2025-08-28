@@ -325,7 +325,7 @@
   }
   
   .table-container {
-    overflow-x: auto;
+  overflow-x: auto;
   }
   
   .clientes-table {
@@ -362,5 +362,54 @@
   
   .search-input {
     padding: 0.625rem 0.875rem;
+  }
+
+  /* Small screens: switch table rows to stacked cards for readability */
+  .table-container {
+    padding: 0.5rem;
+    border-radius: 6px;
+  }
+
+  .clientes-table {
+    width: 100%;
+    min-width: 0;
+    border: none;
+  }
+
+  .clientes-table thead {
+    display: none;
+  }
+
+  .clientes-table tbody tr {
+    display: block;
+    margin-bottom: 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0.75rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .clientes-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.375rem 0.5rem;
+    border: none;
+  }
+
+  .clientes-table tbody td::before {
+    content: attr(data-label);
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-right: 0.5rem;
+    flex: 0 0 auto;
+  }
+
+  .clientes-table tbody td > .actions {
+    justify-content: flex-end;
+  }
+
+  /* Ensure FABs or toggles do not cover content */
+  .sidebar-toggle {
+    left: 10px;
   }
 }
