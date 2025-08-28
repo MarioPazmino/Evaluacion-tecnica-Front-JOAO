@@ -26,31 +26,34 @@
   flex: 1;
   min-width: 250px;
   padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
-  background: white;
+  background: var(--bg-primary);
   font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
 /* Tabla de clientes */
 .table-container {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .clientes-table {
@@ -61,24 +64,27 @@
 }
 
 .clientes-table thead {
-  background: #f8fafc;
+  background: var(--bg-tertiary);
+  transition: background-color 0.2s ease;
 }
 
 .clientes-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .clientes-table td {
   padding: 1rem;
-  border-bottom: 1px solid #f3f4f6;
-  color: #374151;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .clientes-table tbody tr {
@@ -86,7 +92,7 @@
 }
 
 .clientes-table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--bg-tertiary);
 }
 
 .clientes-table tbody tr:last-child td {
@@ -119,34 +125,34 @@
 }
 
 .btn-primary {
-  background: #2563eb;
+  background: var(--accent-primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background: #1d4ed8;
+  background: var(--accent-hover);
   transform: none;
   box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .btn-secondary {
-  background: #1e293b;
+  background: var(--bg-tertiary);
   color: white;
 }
 
 .btn-secondary:hover {
-  background: #0f172a;
+  background: var(--text-primary);
 }
 
 .btn-outline {
   background: transparent;
-  color: #1e293b;
-  border: 2px solid #e2e8f0;
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
 }
 
 .btn-outline:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: var(--border-light);
+  border-color: var(--border-color);
 }
 
 .btn-small {
@@ -167,7 +173,8 @@
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: #6b7280;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
 }
 
 .empty-state p {
@@ -181,9 +188,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 0;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 /* Loading state */
@@ -197,8 +205,8 @@
 .loading-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid #e5e7eb;
-  border-top: 3px solid #2563eb;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--accent-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -222,7 +230,8 @@
 
 .error-container p {
   margin-bottom: 2rem;
-  color: #6b7280;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
 }
 
 /* Responsive design */
