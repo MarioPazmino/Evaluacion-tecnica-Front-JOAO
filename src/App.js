@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastProvider } from './components/Toast';
+import ClienteList from './pages/ClienteList';
+import ClienteCreate from './pages/ClienteCreate';
+import ClienteEdit from './pages/ClienteEdit';
+import Sidebar from './components/Sidebar';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ToastProvider>
+      <Router>
+        <div className="app">
+          <Sidebar />
+          <div className="main-content">
+            <Routes>
+              <Route path="/" element={<ClienteList />} />
+              <Route path="/crear" element={<ClienteCreate />} />
+              <Route path="/editar/:id" element={<ClienteEdit />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </ToastProvider>
   );
 }
 

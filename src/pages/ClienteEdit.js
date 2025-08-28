@@ -1,11 +1,12 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import clienteService from '../services/clienteService';
 import { ToastContext } from '../components/Toast';
 import '../styles/ClienteForm.css';
 
-const ClienteCreate = () => {
+const ClienteEdit = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { addToast } = useContext(ToastContext);
   const [formData, setFormData] = useState({
     nombre: '',
@@ -14,7 +15,38 @@ const ClienteCreate = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
   const [emailChecking, setEmailChecking] = useState(false);
+
+  // Cargar datos del cliente
+  useEffect(() => {
+    const loadCliente = async () => {
+      try {
+        // Simularemos cargar los datos del cliente
+        // En una implementación real, tendrías un endpoint para obtener un cliente por ID
+        const response = await clienteService.getClientes();
+        const cliente = response.data.data.find(c => c.id === parseInt(id));
+        
+        if (cliente) {
+          setFormData({
+            nombre: cliente.nombre,
+            email: cliente.email,
+            telefono: cliente.telefono || ''
+          });
+        } else {
+          addToast('Cliente no encontrado', 'error');
+          navigate('/');
+        }
+      } catch (err) {
+        addToast('Error al cargar cliente', 'error');
+        navigate('/');
+      } finally {
+        setLoadingData(false);
+      }
+    };
+
+    loadCliente();
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +63,7 @@ const ClienteCreate = () => {
       }));
     }
 
-    // Validación de email en vivo
+    // Validación de email en vivo (excluyendo el ID actual)
     if (name === 'email' && value) {
       checkEmailExists(value);
     }
@@ -42,7 +74,7 @@ const ClienteCreate = () => {
     
     try {
       setEmailChecking(true);
-      const response = await clienteService.checkEmail(email);
+      const response = await clienteService.checkEmail(email, id);
       if (response.data.exists) {
         setErrors(prev => ({
           ...prev,
@@ -88,25 +120,33 @@ const ClienteCreate = () => {
 
     try {
       setLoading(true);
-      await clienteService.createCliente(formData);
-      addToast('Cliente creado correctamente', 'success');
+      await clienteService.updateCliente(id, formData);
+      addToast('Cliente actualizado correctamente', 'success');
       navigate('/');
     } catch (err) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
       } else {
-        addToast('Error al crear cliente: ' + (err.response?.data?.message || err.message), 'error');
+        addToast('Error al actualizar cliente: ' + (err.response?.data?.message || err.message), 'error');
       }
     } finally {
       setLoading(false);
     }
   };
 
+  if (loadingData) {
+    return (
+      <div className="container">
+        <div className="loading">Cargando datos del cliente...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1 className="page-title">Crear Nuevo Cliente</h1>
-        <p className="page-subtitle">Registra la información del nuevo cliente en el sistema</p>
+        <h1 className="page-title">Editar Cliente</h1>
+        <p className="page-subtitle">Modifica la información del cliente seleccionado</p>
       </div>
 
       <div className="page-content">
@@ -174,7 +214,7 @@ const ClienteCreate = () => {
             disabled={loading || emailChecking}
             className="btn btn-primary"
           >
-            {loading ? 'Guardando...' : 'Crear Cliente'}
+            {loading ? 'Guardando...' : 'Actualizar Cliente'}
           </button>
           <Link to="/" className="btn btn-secondary">
             Cancelar
@@ -186,4 +226,4 @@ const ClienteCreate = () => {
   );
 };
 
-export default ClienteCreate;
+export default ClienteEdit;
