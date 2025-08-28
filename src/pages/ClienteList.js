@@ -109,7 +109,7 @@ const ClienteList = () => {
           </div>
           
           <Link to="/crear" className="btn btn-primary">
-            ➕ Nuevo Cliente
+            📝 Nuevo Cliente
           </Link>
         </div>
 

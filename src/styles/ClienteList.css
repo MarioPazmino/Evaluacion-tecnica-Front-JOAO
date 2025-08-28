@@ -36,8 +36,8 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .search-input::placeholder {
@@ -119,34 +119,34 @@
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: #2563eb;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: #1d4ed8;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .btn-secondary {
-  background: #6b7280;
+  background: #1e293b;
   color: white;
 }
 
 .btn-secondary:hover {
-  background: #4b5563;
+  background: #0f172a;
 }
 
 .btn-outline {
   background: transparent;
-  color: #6b7280;
-  border: 2px solid #e5e7eb;
+  color: #1e293b;
+  border: 2px solid #e2e8f0;
 }
 
 .btn-outline:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
 
 .btn-small {
@@ -198,7 +198,7 @@
   width: 32px;
   height: 32px;
   border: 3px solid #e5e7eb;
-  border-top: 3px solid #3b82f6;
+  border-top: 3px solid #2563eb;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

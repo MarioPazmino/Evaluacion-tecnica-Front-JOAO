@@ -9,12 +9,12 @@ const Sidebar = () => {
     {
       path: '/',
       label: 'Lista de Clientes',
-      icon: '👥'
+      icon: '�'
     },
     {
       path: '/crear',
       label: 'Nuevo Cliente',
-      icon: '➕'
+      icon: '📝'
     }
   ];
 
@@ -22,8 +22,8 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="sidebar-header">
         <h2 className="sidebar-title">
-          <span className="sidebar-icon">🏢</span>
-          Sistema CRM
+          <span className="sidebar-icon">💼</span>
+          Sistema Contable
         </h2>
       </div>
       
@@ -47,8 +47,8 @@ const Sidebar = () => {
         <div className="sidebar-user">
           <div className="sidebar-user-avatar">👤</div>
           <div className="sidebar-user-info">
-            <span className="sidebar-user-name">Admin</span>
-            <span className="sidebar-user-role">Administrador</span>
+            <span className="sidebar-user-name">Administrador</span>
+            <span className="sidebar-user-role">Sistema Contable</span>
           </div>
         </div>
       </div>

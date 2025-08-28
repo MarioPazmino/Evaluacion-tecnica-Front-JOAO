@@ -41,8 +41,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-group input.error {
@@ -67,11 +67,11 @@
 }
 
 .email-status.checking {
-  color: #3b82f6;
+  color: #2563eb;
 }
 
 .email-status.available {
-  color: #10b981;
+  color: #1e293b;
 }
 
 .email-status.unavailable {
@@ -104,41 +104,41 @@
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: #2563eb;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: #1d4ed8;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .btn-primary:disabled {
-  background: #9ca3af;
+  background: #94a3b8;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
 .btn-secondary {
-  background: #6b7280;
+  background: #1e293b;
   color: white;
 }
 
 .btn-secondary:hover {
-  background: #4b5563;
+  background: #0f172a;
 }
 
 .btn-outline {
   background: transparent;
-  color: #6b7280;
+  color: #1e293b;
   border: 2px solid #e5e7eb;
 }
 
 .btn-outline:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
 
 /* Loading state */
@@ -162,7 +162,7 @@
   width: 20px;
   height: 20px;
   border: 2px solid #e5e7eb;
-  border-top: 2px solid #3b82f6;
+  border-top: 2px solid #2563eb;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
