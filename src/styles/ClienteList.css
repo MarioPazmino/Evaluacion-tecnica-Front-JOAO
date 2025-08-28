@@ -235,6 +235,36 @@
   color: var(--text-muted);
 }
 
+.page-numbers {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  margin: 0 0.5rem;
+}
+
+.page-dots {
+  color: var(--text-muted);
+  padding: 0 0.4rem;
+}
+
+.per-page-label {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--text-muted);
+  margin-right: 1rem;
+}
+
+.per-page-select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.total-label { color: var(--text-muted); margin-top: 0.25rem; }
+
 /* Loading state */
 .loading-container {
   display: flex;

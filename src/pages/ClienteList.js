@@ -17,11 +17,14 @@ const ClienteList = () => {
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [deleting, setDeleting] = useState(false);
   const searchInputRef = useRef(null);
+  const [perPage, setPerPage] = useState(10);
 
-  const loadClientes = async (searchTerm = '', page = 1) => {
+  // perPageOverride allows immediate requests with a newly selected per-page value
+  const loadClientes = async (searchTerm = '', page = 1, perPageOverride = null) => {
     try {
       setLoading(true);
-  const response = await clienteService.getClientes(searchTerm, true, 10, page);
+      const pageSize = perPageOverride || perPage;
+      const response = await clienteService.getClientes(searchTerm, true, pageSize, page);
       
       if (response.data.success) {
         setClientes(response.data.data);
@@ -58,6 +61,33 @@ const ClienteList = () => {
     const p = Math.max(1, Math.min(page, pagination.last_page));
     setCurrentPage(p);
     loadClientes(search, p);
+  };
+
+  // Build a list of page numbers with simple truncation for long ranges
+  const getPageNumbers = () => {
+    if (!pagination) return [];
+    const total = pagination.last_page;
+    const current = pagination.current_page;
+    const delta = 2; // show current +/- delta
+    const range = [];
+
+    for (let i = 1; i <= total; i++) {
+      if (i === 1 || i === total || (i >= current - delta && i <= current + delta)) {
+        range.push(i);
+      } else if (range[range.length - 1] !== '...') {
+        range.push('...');
+      }
+    }
+
+    return range;
+  };
+
+  const handlePerPageChange = (e) => {
+    const val = parseInt(e.target.value, 10) || 10;
+    setPerPage(val);
+    setCurrentPage(1);
+  // pass val directly to avoid race with setPerPage
+  loadClientes(search, 1, val);
   };
 
   const handleDelete = (id, nombre) => {
@@ -190,18 +220,47 @@ const ClienteList = () => {
             </table>
           </div>
 
-          {pagination && pagination.last_page > 1 && (
-            <div className="pagination">
+          <div className="pagination">
+            {pagination && pagination.last_page > 1 ? (
               <div className="pagination-info">
                 <button className="btn btn-outline" onClick={() => goToPage(1)} disabled={pagination.current_page === 1}>Primera</button>
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page - 1)} disabled={pagination.current_page === 1}>Anterior</button>
-                <span className="page-label">Página {pagination.current_page} de {pagination.last_page}</span>
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page + 1)} disabled={pagination.current_page === pagination.last_page}>Siguiente</button>
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.last_page)} disabled={pagination.current_page === pagination.last_page}>Última</button>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page - 1)} disabled={loading || pagination.current_page === 1}>Anterior</button>
+
+                <div className="page-numbers">
+                  {getPageNumbers().map((p, idx) => (
+                    p === '...' ? (
+                      <span key={`dots-${idx}`} className="page-dots">…</span>
+                    ) : (
+                      <button
+                        key={p}
+                        className={`btn ${p === pagination.current_page ? 'btn-primary' : 'btn-outline'}`}
+                        onClick={() => goToPage(p)}
+                        disabled={loading || p === pagination.current_page}
+                      >{p}</button>
+                    )
+                  ))}
+                </div>
+
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page + 1)} disabled={loading || pagination.current_page === pagination.last_page}>Siguiente</button>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.last_page)} disabled={loading || pagination.current_page === pagination.last_page}>Última</button>
               </div>
-              <div className="pagination-stats">Total: {pagination.total} clientes</div>
+            ) : (
+              <div className="pagination-info">
+                <span className="page-label">Página 1 de 1</span>
+              </div>
+            )}
+
+            <div className="pagination-stats">
+              <label className="per-page-label">Por página:
+                <select value={perPage} onChange={handlePerPageChange} className="per-page-select">
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                </select>
+              </label>
+              <div className="total-label">Total: {pagination ? pagination.total : clientes.length} clientes</div>
             </div>
-          )}
+          </div>
         </>
       )}
       </div>
