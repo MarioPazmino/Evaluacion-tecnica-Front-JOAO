@@ -1,0 +1,53 @@
+:root{
+  --modal-backdrop: rgba(2,6,23,0.6);
+}
+
+.confirm-modal-backdrop{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--modal-backdrop);
+  z-index: 1200;
+}
+
+.confirm-modal{
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  border: 1px solid var(--border-color);
+}
+
+.confirm-title{
+  margin: 0 0 0.25rem 0;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.confirm-message{
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+}
+
+.confirm-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btn-danger{
+  background: #ef4444;
+  color: white;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  border: none;
+  font-weight: 600;
+}
+
+.btn-danger:disabled{
+  opacity: 0.7;
+}

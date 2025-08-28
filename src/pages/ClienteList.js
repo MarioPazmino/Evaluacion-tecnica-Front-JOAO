@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import clienteService from '../services/clienteService';
 import { ToastContext } from '../components/Toast';
+import ConfirmModal from '../components/ConfirmModal';
 import '../styles/ClienteList.css';
 
 const ClienteList = () => {
@@ -12,6 +13,9 @@ const ClienteList = () => {
   const [search, setSearch] = useState('');
   const [pagination, setPagination] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedCliente, setSelectedCliente] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const loadClientes = async (searchTerm = '', page = 1) => {
     try {
@@ -41,18 +45,30 @@ const ClienteList = () => {
     loadClientes(search, 1);
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('¿Está seguro de eliminar este cliente?')) {
-      return;
-    }
+  const handleDelete = (id, nombre) => {
+    setSelectedCliente({ id, nombre });
+    setConfirmOpen(true);
+  };
 
+  const confirmDelete = async () => {
+    if (!selectedCliente) return;
     try {
-      await clienteService.deleteCliente(id);
-      loadClientes(search, currentPage);
+      setDeleting(true);
+      await clienteService.deleteCliente(selectedCliente.id);
+      setConfirmOpen(false);
+      setSelectedCliente(null);
       addToast('Cliente eliminado correctamente', 'success');
+      await loadClientes(search, currentPage);
     } catch (err) {
       addToast('Error al eliminar cliente', 'error');
+    } finally {
+      setDeleting(false);
     }
+  };
+
+  const cancelDelete = () => {
+    setConfirmOpen(false);
+    setSelectedCliente(null);
   };
 
   if (loading) {
@@ -146,7 +162,7 @@ const ClienteList = () => {
                         Editar
                       </Link>
                       <button
-                        onClick={() => handleDelete(cliente.id)}
+                        onClick={() => handleDelete(cliente.id, cliente.nombre)}
                         className="btn btn-small btn-danger"
                       >
                         Eliminar
@@ -171,6 +187,14 @@ const ClienteList = () => {
         </>
       )}
       </div>
+      <ConfirmModal
+        open={confirmOpen}
+        title="Confirmar eliminación"
+        message={selectedCliente ? `¿Está seguro de eliminar al cliente "${selectedCliente.nombre}"? Esta acción no se puede deshacer.` : '¿Está seguro de eliminar este cliente?'}
+        onCancel={cancelDelete}
+        onConfirm={confirmDelete}
+        loading={deleting}
+      />
     </div>
   );
 };
