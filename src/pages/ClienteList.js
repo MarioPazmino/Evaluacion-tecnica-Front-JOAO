@@ -16,7 +16,7 @@ const ClienteList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedCliente, setSelectedCliente] = useState(null);
-  const [deleting, setDeleting] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const searchInputRef = useRef(null);
   const [perPage, setPerPage] = useState(10);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -151,8 +151,8 @@ const ClienteList = () => {
   const confirmDelete = async () => {
     if (!selectedCliente) return;
     try {
-      setDeleting(true);
-      await clienteService.deleteCliente(selectedCliente.id);
+  setDeletingId(selectedCliente.id);
+  await clienteService.deleteCliente(selectedCliente.id);
       setConfirmOpen(false);
       setSelectedCliente(null);
       addToast('Cliente eliminado correctamente', 'success');
@@ -160,7 +160,7 @@ const ClienteList = () => {
     } catch (err) {
       addToast('Error al eliminar cliente', 'error');
     } finally {
-      setDeleting(false);
+  setDeletingId(null);
     }
   };
 
@@ -263,8 +263,9 @@ const ClienteList = () => {
                       <button
                         onClick={() => handleDelete(cliente.id, cliente.nombre)}
                         className="btn btn-small btn-danger"
+                        disabled={Boolean(deletingId)}
                       >
-                        Eliminar
+                        {deletingId === cliente.id ? <Spinner size="sm" /> : 'Eliminar'}
                       </button>
                     </td>
                   </tr>
@@ -323,8 +324,8 @@ const ClienteList = () => {
         title="Confirmar eliminación"
         message={selectedCliente ? `¿Está seguro de eliminar al cliente "${selectedCliente.nombre}"? Esta acción no se puede deshacer.` : '¿Está seguro de eliminar este cliente?'}
         onCancel={cancelDelete}
-        onConfirm={confirmDelete}
-        loading={deleting}
+  onConfirm={confirmDelete}
+  loading={Boolean(deletingId)}
       />
     </div>
   );
