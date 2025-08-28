@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
 import '../styles/Sidebar.css';
 
 const Sidebar = () => {
@@ -45,10 +44,6 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <div className="sidebar-theme-toggle">
-          <ThemeToggle />
-        </div>
-        
         <div className="sidebar-user">
           <div className="sidebar-user-avatar">👤</div>
           <div className="sidebar-user-info">

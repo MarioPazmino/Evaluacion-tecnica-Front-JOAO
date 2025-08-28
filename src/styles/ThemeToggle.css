@@ -43,3 +43,56 @@
     font-size: 1.1rem;
   }
 }
+
+/* Floating action button for theme toggle (hidden by default) */
+.theme-fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1100;
+  display: block; /* always present, styled per theme */
+}
+
+/* Circular FAB styling */
+.theme-fab .theme-toggle {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(2,6,23,0.35);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 200ms ease;
+  border: none;
+}
+
+/* hide the label when inside the FAB */
+.theme-fab .theme-label {
+  display: none;
+}
+
+/* Light mode FAB look */
+:not([data-theme="dark"]) .theme-fab .theme-toggle {
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid rgba(16, 24, 40, 0.06);
+}
+
+/* Dark mode FAB look */
+[data-theme="dark"] .theme-fab .theme-toggle {
+  background: #2563eb; /* accent blue */
+  color: #ffffff;
+}
+
+/* Active / pressed state */
+.theme-fab .theme-toggle:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 6px 14px rgba(2,6,23,0.45);
+}
+
+/* focus-visible for accessibility */
+.theme-fab .theme-toggle:focus-visible {
+  outline: 3px solid rgba(37,99,235,0.18);
+}

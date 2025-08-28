@@ -6,6 +6,7 @@ import ClienteList from './pages/ClienteList';
 import ClienteCreate from './pages/ClienteCreate';
 import ClienteEdit from './pages/ClienteEdit';
 import Sidebar from './components/Sidebar';
+import ThemeToggle from './components/ThemeToggle';
 import './App.css';
 
 function App() {
@@ -15,6 +16,10 @@ function App() {
         <Router>
           <div className="app">
             <Sidebar />
+            {/* Floating theme button (will be visible in dark mode via CSS) */}
+            <div className="theme-fab" aria-hidden>
+              <ThemeToggle />
+            </div>
             <div className="main-content">
               <Routes>
                 <Route path="/" element={<ClienteList />} />
