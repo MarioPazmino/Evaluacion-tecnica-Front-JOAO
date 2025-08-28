@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import clienteService from '../services/clienteService';
 import { ToastContext } from '../components/Toast';
@@ -16,6 +16,7 @@ const ClienteList = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const searchInputRef = useRef(null);
 
   const loadClientes = async (searchTerm = '', page = 1) => {
     try {
@@ -41,6 +42,13 @@ const ClienteList = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    // Prevent submitting an empty search
+    if (!search || !search.trim()) {
+      addToast('Introduce un término de búsqueda', 'error');
+      if (searchInputRef.current) searchInputRef.current.focus();
+      return;
+    }
+
     setCurrentPage(1);
     loadClientes(search, 1);
   };
@@ -102,11 +110,12 @@ const ClienteList = () => {
               <input
                 type="text"
                 placeholder="Buscar clientes por nombre o email..."
+                ref={searchInputRef}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-input"
               />
-              <button type="submit" className="btn btn-secondary">
+              <button type="submit" className="btn btn-secondary" disabled={!search || !search.trim()}>
                 Buscar
               </button>
               {search && (
