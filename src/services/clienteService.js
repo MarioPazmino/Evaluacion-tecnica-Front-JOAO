@@ -11,12 +11,13 @@ axios.defaults.headers.common = {
 
 const clienteService = {
   // Obtener todos los clientes
-  getClientes: async (search = '', paginate = false, perPage = 10) => {
+  getClientes: async (search = '', paginate = false, perPage = 10, page = 1) => {
     const params = new URLSearchParams();
     if (search) params.append('search', search);
     if (paginate) {
       params.append('paginate', 'true');
       params.append('per_page', perPage);
+      if (page) params.append('page', page);
     }
     
     const url = params.toString() ? `${API_URL}?${params}` : API_URL;

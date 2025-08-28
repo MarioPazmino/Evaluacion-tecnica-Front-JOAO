@@ -219,6 +219,22 @@
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
+.pagination-info {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.page-label {
+  margin: 0 0.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.pagination-stats {
+  color: var(--text-muted);
+}
+
 /* Loading state */
 .loading-container {
   display: flex;

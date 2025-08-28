@@ -21,7 +21,7 @@ const ClienteList = () => {
   const loadClientes = async (searchTerm = '', page = 1) => {
     try {
       setLoading(true);
-      const response = await clienteService.getClientes(searchTerm, true, 10);
+  const response = await clienteService.getClientes(searchTerm, true, 10, page);
       
       if (response.data.success) {
         setClientes(response.data.data);
@@ -51,6 +51,13 @@ const ClienteList = () => {
 
     setCurrentPage(1);
     loadClientes(search, 1);
+  };
+
+  const goToPage = (page) => {
+    if (!pagination) return;
+    const p = Math.max(1, Math.min(page, pagination.last_page));
+    setCurrentPage(p);
+    loadClientes(search, p);
   };
 
   const handleDelete = (id, nombre) => {
@@ -185,12 +192,14 @@ const ClienteList = () => {
 
           {pagination && pagination.last_page > 1 && (
             <div className="pagination">
-              <span>
-                Página {pagination.current_page} de {pagination.last_page}
-              </span>
-              <span>
-                Total: {pagination.total} clientes
-              </span>
+              <div className="pagination-info">
+                <button className="btn btn-outline" onClick={() => goToPage(1)} disabled={pagination.current_page === 1}>Primera</button>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page - 1)} disabled={pagination.current_page === 1}>Anterior</button>
+                <span className="page-label">Página {pagination.current_page} de {pagination.last_page}</span>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page + 1)} disabled={pagination.current_page === pagination.last_page}>Siguiente</button>
+                <button className="btn btn-outline" onClick={() => goToPage(pagination.last_page)} disabled={pagination.current_page === pagination.last_page}>Última</button>
+              </div>
+              <div className="pagination-stats">Total: {pagination.total} clientes</div>
             </div>
           )}
         </>
