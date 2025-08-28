@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import clienteService from '../services/clienteService';
 import { ToastContext } from '../components/Toast';
 import Spinner from '../components/Spinner';
+import { normalizeApiErrors } from '../utils/errorUtils';
+import GlobalErrorBanner from '../components/GlobalErrorBanner';
 import '../styles/ClienteForm.css';
 
 const ClienteCreate = () => {
@@ -104,11 +106,16 @@ const ClienteCreate = () => {
       addToast('Cliente creado correctamente', 'success');
       navigate('/');
     } catch (err) {
-      if (err.response?.data?.errors) {
-        setErrors(err.response.data.errors);
-      } else {
-        addToast('Error al crear cliente: ' + (err.response?.data?.message || err.message), 'error');
-      }
+        const norm = normalizeApiErrors(err);
+        if (norm) {
+          setErrors(norm);
+          // If there's a global message, show it at top via banner
+          if (norm._global) {
+            // keep _global in errors (banner reads from errors)
+          }
+        } else {
+          addToast('Error al crear cliente: ' + (err.response?.data?.message || err.message), 'error');
+        }
     } finally {
       setLoading(false);
     }
@@ -122,6 +129,9 @@ const ClienteCreate = () => {
       </div>
 
       <div className="page-content">
+        {errors._global && (
+          <GlobalErrorBanner message={errors._global} onClose={() => setErrors(prev => ({ ...prev, _global: undefined }))} />
+        )}
         <div className="form-actions">
           <Link to="/" className="btn btn-outline">
             ← Volver al listado

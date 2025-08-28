@@ -31,7 +31,14 @@ const ClienteList = () => {
       
       if (response.data.success) {
         setClientes(response.data.data);
-        setPagination(response.data.pagination);
+        const pag = response.data.pagination;
+        setPagination(pag);
+
+        // If server returns a different current_page (e.g., requested page > last_page), reconcile state + URL
+        if (pag && pag.current_page && pag.current_page !== page) {
+          setCurrentPage(pag.current_page);
+          updateUrlParams(searchTerm, pag.current_page, pageSize);
+        }
       } else {
         setError('Error al cargar clientes');
       }

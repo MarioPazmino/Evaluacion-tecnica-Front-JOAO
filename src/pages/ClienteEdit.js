@@ -3,6 +3,8 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import clienteService from '../services/clienteService';
 import { ToastContext } from '../components/Toast';
 import Spinner from '../components/Spinner';
+import { normalizeApiErrors } from '../utils/errorUtils';
+import GlobalErrorBanner from '../components/GlobalErrorBanner';
 import '../styles/ClienteForm.css';
 
 const ClienteEdit = () => {
@@ -136,11 +138,12 @@ const ClienteEdit = () => {
       addToast('Cliente actualizado correctamente', 'success');
       navigate('/');
     } catch (err) {
-      if (err.response?.data?.errors) {
-        setErrors(err.response.data.errors);
-      } else {
-        addToast('Error al actualizar cliente: ' + (err.response?.data?.message || err.message), 'error');
-      }
+        const norm = normalizeApiErrors(err);
+        if (norm) {
+          setErrors(norm);
+        } else {
+          addToast('Error al actualizar cliente: ' + (err.response?.data?.message || err.message), 'error');
+        }
     } finally {
       setLoading(false);
     }
@@ -162,6 +165,9 @@ const ClienteEdit = () => {
       </div>
 
       <div className="page-content">
+          {errors._global && (
+            <GlobalErrorBanner message={errors._global} onClose={() => setErrors(prev => ({ ...prev, _global: undefined }))} />
+          )}
         <div className="form-actions">
           <Link to="/" className="btn btn-outline">
             ← Volver al listado
