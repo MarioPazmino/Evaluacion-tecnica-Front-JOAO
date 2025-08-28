@@ -18,6 +18,7 @@ const ClienteList = () => {
   const [deleting, setDeleting] = useState(false);
   const searchInputRef = useRef(null);
   const [perPage, setPerPage] = useState(10);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   // perPageOverride allows immediate requests with a newly selected per-page value
   const loadClientes = async (searchTerm = '', page = 1, perPageOverride = null) => {
@@ -38,6 +39,24 @@ const ClienteList = () => {
       setLoading(false);
     }
   };
+
+  // Debounce search input to avoid too many requests while typing
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [search]);
+
+  // Trigger search when debounced value changes (but avoid firing for empty search)
+  useEffect(() => {
+    if (debouncedSearch && debouncedSearch.trim()) {
+      setCurrentPage(1);
+      loadClientes(debouncedSearch, 1);
+    }
+    // Note: do not auto-load when debouncedSearch is empty to preserve explicit 'Limpiar' behavior
+  }, [debouncedSearch]);
 
   useEffect(() => {
     loadClientes();
