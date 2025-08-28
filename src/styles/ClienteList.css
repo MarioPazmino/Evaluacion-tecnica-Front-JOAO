@@ -136,12 +136,37 @@
 }
 
 .btn-secondary {
-  background: var(--bg-tertiary);
+  background: #475569;
   color: white;
 }
 
 .btn-secondary:hover {
-  background: var(--text-primary);
+  background: #334155;
+}
+
+/* Force visible colors for secondary buttons in light mode only. */
+/* Use a selector that targets absence of data-theme="dark" so dark mode remains untouched. */
+:not([data-theme="dark"]) .btn-secondary,
+:root .btn-secondary {
+  background: #334155; /* visible dark-gray in light mode */
+  color: #ffffff;
+  opacity: 1;
+  border: none;
+}
+
+:not([data-theme="dark"]) .btn-secondary:hover,
+:root .btn-secondary:hover {
+  background: #1e293b;
+}
+
+/* Clear disabled appearance in light mode so disabled buttons remain legible */
+:not([data-theme="dark"]) .btn-secondary:disabled,
+:not([data-theme="dark"]) .btn-secondary[disabled] {
+  background: #e6eefb; /* subtle light background */
+  color: #6b7280; /* readable muted text */
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 1;
 }
 
 .btn-outline {
@@ -151,8 +176,8 @@
 }
 
 .btn-outline:hover {
-  background: var(--border-light);
-  border-color: var(--border-color);
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
 }
 
 .btn-small {
@@ -291,325 +316,5 @@
   
   .search-input {
     padding: 0.625rem 0.875rem;
-  }
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f8fafc;
-  min-height: 100vh;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.header h1 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 2.25rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-}
-
-.search-section {
-  margin-bottom: 24px;
-}
-
-.search-form {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.search-input {
-  flex: 1;
-  min-width: 320px;
-  padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  background: white;
-  transition: all 0.2s ease;
-  font-family: 'Inter', sans-serif;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
-}
-
-.search-input::placeholder {
-  color: #9ca3af;
-}
-
-.table-container {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  border: 1px solid #e5e7eb;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-
-.clientes-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.clientes-table th {
-  padding: 16px 20px;
-  text-align: left;
-  background: #f9fafb;
-  color: #374151;
-  font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.clientes-table td {
-  padding: 16px 20px;
-  border-bottom: 1px solid #f3f4f6;
-  font-size: 14px;
-  color: #374151;
-  vertical-align: middle;
-}
-
-.clientes-table tbody tr {
-  transition: background-color 0.15s ease;
-}
-
-.clientes-table tbody tr:hover {
-  background: #f9fafb;
-}
-
-.clientes-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  border: 1px solid #e5e7eb;
-  flex-wrap: wrap;
-  gap: 12px;
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 80px 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  border: 1px solid #e5e7eb;
-}
-
-.empty-state::before {
-  content: '📋';
-  font-size: 3rem;
-  display: block;
-  margin-bottom: 16px;
-  opacity: 0.4;
-}
-
-.empty-state p {
-  font-size: 1.125rem;
-  color: #6b7280;
-  margin-bottom: 24px;
-  font-weight: 400;
-}
-
-.loading,
-.error {
-  text-align: center;
-  padding: 60px;
-  font-size: 1rem;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-}
-
-.loading {
-  color: #6b7280;
-  background: white;
-}
-
-.loading::before {
-  content: '⏳';
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 12px;
-  opacity: 0.6;
-}
-
-.error {
-  color: #dc2626;
-  background: #fef2f2;
-  border-color: #fecaca;
-}
-
-.error::before {
-  content: '❌';
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 12px;
-  opacity: 0.6;
-}
-
-/* Botones con diseño minimalista */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  text-decoration: none;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-  font-family: 'Inter', sans-serif;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #3b82f6;
-  color: white;
-  border-color: #3b82f6;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: #2563eb;
-  border-color: #2563eb;
-}
-
-.btn-secondary {
-  background: #6b7280;
-  color: white;
-  border-color: #6b7280;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: #4b5563;
-  border-color: #4b5563;
-}
-
-.btn-danger {
-  background: #dc2626;
-  color: white;
-  border-color: #dc2626;
-}
-
-.btn-danger:hover:not(:disabled) {
-  background: #b91c1c;
-  border-color: #b91c1c;
-}
-
-.btn-outline {
-  background: white;
-  color: #374151;
-  border-color: #d1d5db;
-}
-
-.btn-outline:hover:not(:disabled) {
-  background: #f9fafb;
-  border-color: #9ca3af;
-}
-
-.btn-small {
-  padding: 6px 12px;
-  font-size: 12px;
-}
-
-/* Responsive mejorado */
-@media (max-width: 768px) {
-  .container {
-    padding: 20px 16px;
-  }
-  
-  .header {
-    text-align: center;
-    flex-direction: column;
-  }
-  
-  .header h1 {
-    font-size: 1.875rem;
-  }
-  
-  .search-form {
-    flex-direction: column;
-  }
-  
-  .search-input {
-    min-width: 100%;
-  }
-  
-  .table-container {
-    overflow-x: auto;
-  }
-  
-  .clientes-table {
-    font-size: 13px;
-    min-width: 600px;
-  }
-  
-  .clientes-table th,
-  .clientes-table td {
-    padding: 12px 16px;
-  }
-  
-  .actions {
-    flex-direction: column;
-  }
-  
-  .pagination {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 16px 12px;
-  }
-  
-  .header h1 {
-    font-size: 1.5rem;
-  }
-  
-  .btn {
-    padding: 8px 12px;
-    font-size: 12px;
   }
 }

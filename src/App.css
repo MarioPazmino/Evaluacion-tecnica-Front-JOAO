@@ -94,11 +94,12 @@ body {
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-radius: 12px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--border-color);
 }
 
 .page-header {
@@ -125,7 +126,7 @@ body {
 
 .page-content {
   padding: 2rem;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   transition: background-color 0.2s ease;
 }
 
