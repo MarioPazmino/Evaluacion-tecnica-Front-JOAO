@@ -61,10 +61,7 @@ const ClienteCreate = () => {
 
   const validateForm = () => {
     const newErrors = {};
-
-    // Permitir letras (con acentos), espacios, guiones y apóstrofes
     const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s'\-]+$/;
-    // Teléfono: dígitos y los caracteres comunes + - ( ) y espacios
     const phonePattern = /^[0-9\s()+\-]+$/;
 
     if (!formData.nombre.trim()) {

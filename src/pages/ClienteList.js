@@ -65,7 +65,7 @@ const ClienteList = () => {
   loadClientes(debouncedSearch, 1);
   updateUrlParams(debouncedSearch, 1, perPage);
     }
-    // Note: do not auto-load when debouncedSearch is empty to preserve explicit 'Limpiar' behavior
+  
   }, [debouncedSearch]);
 
   // On mount: read query params and load accordingly
@@ -73,15 +73,10 @@ const ClienteList = () => {
     const q = searchParams.get('search') || '';
     const pageParam = parseInt(searchParams.get('page'), 10) || 1;
     const perPageParam = parseInt(searchParams.get('per_page'), 10) || perPage;
-
-    // populate local state from params
     setSearch(q);
     setPerPage(perPageParam);
     setCurrentPage(pageParam);
-
-    // If there is a search term, load with it; otherwise load page normally
     loadClientes(q, pageParam, perPageParam);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Helper to keep URL in sync with state

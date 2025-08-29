@@ -16,13 +16,12 @@
 
 /* Mobile toggle button (hamburger) */
 .sidebar-toggle {
-  /* hidden by default on larger screens; shown only on mobile via media query */
   display: none;
 }
 
 /* Backdrop shown when sidebar is open on mobile */
 .sidebar-backdrop {
-  display: none; /* visible only on mobile via media query */
+  display: none; 
 }
 
 .sidebar-header {
@@ -171,7 +170,6 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  /* show toggle and backdrop only on narrow viewports */
   .sidebar-toggle {
     position: fixed;
     top: 12px;

@@ -144,11 +144,9 @@
   background: #334155;
 }
 
-/* Force visible colors for secondary buttons in light mode only. */
-/* Use a selector that targets absence of data-theme="dark" so dark mode remains untouched. */
 :not([data-theme="dark"]) .btn-secondary,
 :root .btn-secondary {
-  background: #334155; /* visible dark-gray in light mode */
+  background: #334155; 
   color: #ffffff;
   opacity: 1;
   border: none;
@@ -162,8 +160,8 @@
 /* Clear disabled appearance in light mode so disabled buttons remain legible */
 :not([data-theme="dark"]) .btn-secondary:disabled,
 :not([data-theme="dark"]) .btn-secondary[disabled] {
-  background: #e6eefb; /* subtle light background */
-  color: #6b7280; /* readable muted text */
+  background: #e6eefb; 
+  color: #6b7280; 
   cursor: not-allowed;
   box-shadow: none;
   opacity: 1;
@@ -363,8 +361,6 @@
   .search-input {
     padding: 0.625rem 0.875rem;
   }
-
-  /* Small screens: switch table rows to stacked cards for readability */
   .table-container {
     padding: 0.5rem;
     border-radius: 6px;
@@ -407,8 +403,6 @@
   .clientes-table tbody td > .actions {
     justify-content: flex-end;
   }
-
-  /* Ensure FABs or toggles do not cover content */
   .sidebar-toggle {
     left: 10px;
   }

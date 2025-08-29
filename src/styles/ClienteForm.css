@@ -8,11 +8,11 @@
 }
 
 .cliente-form {
-  max-width: 520px; /* slightly narrower for better proportion */
-  margin: 0 auto; /* center form */
+  max-width: 520px; 
+  margin: 0 auto; 
   background: var(--bg-primary);
   border-radius: 10px;
-  padding: 1.25rem; /* more compact */
+  padding: 1.25rem; 
   box-shadow: var(--shadow-sm);
   font-family: 'Inter', sans-serif;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
@@ -99,7 +99,7 @@
   gap: 0.75rem;
   margin-top: 1.25rem;
   flex-wrap: wrap;
-  justify-content: flex-end; /* align action buttons to the right */
+  justify-content: flex-end; 
 }
 
 /* Botones */
@@ -107,7 +107,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.55rem 1.05rem; /* more compact buttons */
+  padding: 0.55rem 1.05rem; 
   border: none;
   border-radius: 8px;
   font-size: 0.92rem;
