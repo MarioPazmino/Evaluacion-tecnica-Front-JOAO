@@ -200,25 +200,27 @@ const ClienteList = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-input"
               />
-              <button type="submit" className="btn btn-secondary" disabled={!search || !search.trim()}>
-                Buscar
-              </button>
-              {search && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSearch('');
-                    loadClientes();
-                  }}
-                  className="btn btn-outline"
-                >
-                  Limpiar
+              <div className="search-buttons">
+                <button type="submit" className="btn btn-secondary" disabled={!search || !search.trim()}>
+                  Buscar
                 </button>
-              )}
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch('');
+                      loadClientes();
+                    }}
+                    className="btn btn-outline"
+                  >
+                    Limpiar
+                  </button>
+                )}
+              </div>
             </form>
           </div>
           
-          <Link to="/crear" className="btn btn-primary">
+          <Link to="/crear" className="btn btn-primary new-client-btn">
             📝 Nuevo Cliente
           </Link>
         </div>
@@ -232,7 +234,8 @@ const ClienteList = () => {
         </div>
       ) : (
         <>
-          <div className="table-container">
+          {/* Desktop table view */}
+          <div className="table-container desktop-only">
             <table className="clientes-table">
               <thead>
                 <tr>
@@ -267,6 +270,44 @@ const ClienteList = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile card view */}
+          <div className="cards-container mobile-only">
+            {clientes.map((cliente) => (
+              <div key={cliente.id} className="client-card">
+                <div className="client-card-header">
+                  <h3 className="client-name">{cliente.nombre}</h3>
+                </div>
+                <div className="client-card-body">
+                  <div className="client-info">
+                    <div className="info-row">
+                      <span className="info-label">Email:</span>
+                      <span className="info-value">{cliente.email}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Teléfono:</span>
+                      <span className="info-value">{cliente.telefono || '-'}</span>
+                    </div>
+                  </div>
+                  <div className="client-actions">
+                    <Link
+                      to={`/editar/${cliente.id}`}
+                      className="btn btn-small btn-secondary"
+                    >
+                      Editar
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(cliente.id, cliente.nombre)}
+                      className="btn btn-small btn-danger"
+                      disabled={Boolean(deletingId)}
+                    >
+                      {deletingId === cliente.id ? <Spinner size="sm" /> : 'Eliminar'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="pagination">
