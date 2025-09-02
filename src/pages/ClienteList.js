@@ -115,14 +115,54 @@ const ClienteList = () => {
     if (!pagination) return [];
     const total = pagination.last_page;
     const current = pagination.current_page;
-    const delta = 2; // show current +/- delta
+    
+    // For mobile, show fewer pages to save space
+    const isMobile = window.innerWidth <= 768;
+    
+    // If total pages <= 5 on mobile or 7 on desktop, show all pages
+    const maxPages = isMobile ? 5 : 7;
+    if (total <= maxPages) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    
     const range = [];
+    
+    if (isMobile) {
+      // Mobile: very simple pagination - show max 5 items
+      if (current <= 3) {
+        // Show: 1, 2, 3, ..., last
+        range.push(1, 2, 3);
+        if (total > 4) range.push('...');
+        if (total > 3) range.push(total);
+      } else if (current >= total - 2) {
+        // Show: 1, ..., last-2, last-1, last
+        range.push(1);
+        if (total > 4) range.push('...');
+        for (let i = Math.max(1, total - 2); i <= total; i++) {
+          if (!range.includes(i)) range.push(i);
+        }
+      } else {
+        // Show: 1, ..., current, ..., last
+        range.push(1, '...', current, '...', total);
+      }
+    } else {
+      // Desktop: more detailed pagination
+      const delta = 1;
+      const showFirst = current > delta + 2;
+      const showLast = current < total - delta - 1;
 
-    for (let i = 1; i <= total; i++) {
-      if (i === 1 || i === total || (i >= current - delta && i <= current + delta)) {
+      if (showFirst) {
+        range.push(1);
+        if (current > delta + 3) range.push('...');
+      }
+
+      for (let i = Math.max(1, current - delta); i <= Math.min(total, current + delta); i++) {
         range.push(i);
-      } else if (range[range.length - 1] !== '...') {
-        range.push('...');
+      }
+
+      if (showLast) {
+        if (current < total - delta - 2) range.push('...');
+        range.push(total);
       }
     }
 
@@ -313,9 +353,7 @@ const ClienteList = () => {
           <div className="pagination">
             {pagination && pagination.last_page > 1 ? (
               <div className="pagination-info">
-                <button className="btn btn-outline" onClick={() => goToPage(1)} disabled={pagination.current_page === 1}>Primera</button>
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page - 1)} disabled={loading || pagination.current_page === 1}>{loading ? <Spinner size="sm" /> : 'Anterior'}</button>
-
+                {/* Page numbers first on mobile */}
                 <div className="page-numbers">
                   {getPageNumbers().map((p, idx) => (
                     p === '...' ? (
@@ -331,8 +369,23 @@ const ClienteList = () => {
                   ))}
                 </div>
 
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.current_page + 1)} disabled={loading || pagination.current_page === pagination.last_page}>{loading ? <Spinner size="sm" /> : 'Siguiente'}</button>
-                <button className="btn btn-outline" onClick={() => goToPage(pagination.last_page)} disabled={loading || pagination.current_page === pagination.last_page}>{loading ? <Spinner size="sm" /> : 'Última'}</button>
+                {/* Navigation buttons */}
+                <div className="pagination-nav-buttons">
+                  <button 
+                    className="btn btn-outline" 
+                    onClick={() => goToPage(pagination.current_page - 1)} 
+                    disabled={loading || pagination.current_page === 1}
+                  >
+                    {loading ? <Spinner size="sm" /> : '◀ Anterior'}
+                  </button>
+                  <button 
+                    className="btn btn-outline" 
+                    onClick={() => goToPage(pagination.current_page + 1)} 
+                    disabled={loading || pagination.current_page === pagination.last_page}
+                  >
+                    {loading ? <Spinner size="sm" /> : 'Siguiente ▶'}
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="pagination-info">
