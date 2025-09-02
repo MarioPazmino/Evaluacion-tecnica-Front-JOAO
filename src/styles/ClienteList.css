@@ -1,6 +1,35 @@
 /* Lista de clientes - Layout actualizado para sidebar */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Page header responsive improvements */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .page-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .page-title {
+    font-size: 1.75rem;
+  }
+  
+  .page-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .page-subtitle {
+    font-size: 0.85rem;
+  }
+}
+
 /* Mobile/Desktop visibility utilities - FORCE OVERRIDE */
 .cards-container.mobile-only {
   display: none !important;
@@ -17,6 +46,67 @@
   
   .cards-container.mobile-only {
     display: block !important;
+  }
+}
+
+/* Tablet and medium screens responsive improvements */
+@media (max-width: 1200px) and (min-width: 769px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .clientes-table {
+    min-width: 800px;
+    font-size: 0.9rem;
+  }
+  
+  .clientes-table th,
+  .clientes-table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .cliente-list-actions {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .search-container {
+    min-width: 300px;
+  }
+}
+
+/* Large tablets (iPad landscape) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .clientes-table {
+    min-width: 750px;
+    font-size: 0.85rem;
+  }
+  
+  .clientes-table th,
+  .clientes-table td {
+    padding: 0.5rem;
+  }
+  
+  .pagination-container {
+    padding: 1rem;
+  }
+  
+  .pagination-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small tablets and large phones in landscape */
+@media (max-width: 900px) and (min-width: 769px) {
+  .clientes-table th:nth-child(4),
+  .clientes-table td:nth-child(4) {
+    display: none; /* Hide telefono column on smaller tablets */
+  }
+  
+  .clientes-table {
+    min-width: 600px;
   }
 }
 
@@ -37,6 +127,22 @@
   }
 }
 
+/* Tablet actions adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .cliente-list-actions {
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
+  .cliente-list-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
 .search-container {
   flex: 1;
   max-width: 600px;
@@ -46,6 +152,13 @@
   .search-container {
     max-width: none;
     width: 100%;
+  }
+}
+
+/* Tablet search container adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .search-container {
+    max-width: 500px;
   }
 }
 
@@ -85,6 +198,15 @@
   }
 }
 
+/* Tablet search input adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .search-input {
+    min-width: 200px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
 .search-buttons {
   display: flex;
   gap: 0.75rem;
@@ -112,6 +234,14 @@
     width: 100%;
     justify-content: center;
     min-height: 44px; /* Touch-friendly */
+  }
+}
+
+/* Tablet new client button adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .new-client-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
   }
 }
 
